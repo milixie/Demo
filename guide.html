@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新手指导</title>
+	<style type="text/css">
+	*{
+		margin:0;
+		padding: 0;
+	}
+	html{
+		height: 100%;
+	}
+	body{
+		height: 100%;
+		background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/stepbg.jpg) no-repeat;
+	}
+	#mask{
+		position: absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height: 100%;
+		background: #000;
+		opacity: 0.5;
+		filter:alpha(opacity=50);
+		display: none;
+	}
+	a{
+		display: block;
+		width:90px;
+		height: 30px;
+		text-indent: -999px;
+		overflow: hidden;
+		position: absolute;
+		cursor: pointer;
+	}
+	span{
+		display: block;
+		width:30px;
+		height: 30px;
+		text-indent: -999px;
+		overflow: hidden;
+		position: absolute;
+		cursor: pointer;
+	}
+	#step{
+		position: relative;
+	}
+	#step div{
+		position: absolute;
+		display: none;
+	}
+	.stepA{
+		width:745px;
+		height:329px;
+		background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/stepA.jpg) no-repeat;
+		top:127px;
+		left:315px;
+	}
+	.stepB{
+		width:647px;
+		height: 405px;
+		background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/stepB.jpg) no-repeat;
+		top:4px;
+		left:642px;
+	}
+	.stepC{
+		width:654px;
+		height: 257px;
+		background:url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/stepC.jpg) no-repeat;
+		top:294px;
+		left:638px;
+	}
+	.stepD{
+		width:558px;
+		height: 348px;
+		background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/stepD.jpg) no-repeat;
+		top:80px;
+		left:484px;
+	}
+	.stepE{
+		width:397px;
+		height: 342px;
+		background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/stepE.jpg) no-repeat;
+		top:80px;
+		left:574px;
+	}
+	.stepA a{
+		top:232px;
+		left:493px;
+	}
+	.stepA span{
+		top:145px;
+		left:685px;
+	}
+	.stepB a{
+		top:308px;
+		left:149px;
+	}
+	.stepB span{
+		top:196px;
+		left:332px;
+	}
+	.stepC a{
+		top:156px;
+		left:404px;
+	}
+	.stepC span{
+		top:44px;
+		left:588px;
+	}
+	.stepD a{
+		top:247px;
+		left:308px;
+	}
+	.stepD span{
+		top:135px;
+		left:492px;
+	}
+	.stepE a{
+		top:247px;
+		left:155px;
+	}
+	
+	</style>
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
+	<script type="text/javascript">
+	//js原生代码
+	/*window.onload=function () {
+		// body...
+		var oMask=document.getElementById('mask');
+		var oStep=document.getElementById('step');
+		var oDiv=oStep.getElementsByTagName('div');
+		var oA=oStep.getElementsByTagName('a');
+		var oSpan=oStep.getElementsByTagName('span');
+		//alert(oSpan.length);
+		
+		//读取cookie
+		var res=document.cookie.substring(5);
+		//alert(res);
+		//如果没有cookies，执行以下动作
+		
+		if(res!='www.open.com.cn'){
+			//alert(res);
+			oDiv[0].style.display=oMask.style.display='block';
+			for(var i=0;i<oA.length;i++){
+				oA[i].index=i;
+				oA[i].onclick=function(){
+					for(var i=0;i<oA.length;i++){
+						oDiv[i].style.display='none';
+					}
+					if(this.index<oA.length-1){
+						oDiv[this.index+1].style.display='block';
+					}
+					else if(this.index==oA.length-1){
+						oMask.style.display=this.style.display=oStep.style.display='none';
+					}
+				}
+			}
+			for(var i=0;i<oSpan.length;i++){
+				oSpan[i].onclick=function(){
+					oMask.style.display=oStep.style.display='none';
+				}
+			}
+			//添加cookie
+			var oDate=new Date();
+			oDate.setDate(oDate.getDate()+30);
+			document.cookie="name=www.open.com.cn;expires="+oDate;
+		}
+	};*/
+	//jquery方法
+	$(function(){
+		var res=document.cookie.substring(5);
+		if(res!='www.open.com.cn'){
+			$('#mask,#step,#step div:eq(0)').show();
+			$('#step div a').click(function(){
+				var current=$(this).parent();
+				current.hide();
+				current.next().show();
+			});
+			$('#step div span,#step div a:last').click(function(){
+				$('#mask,#step').hide();
+			});
+		}
+		
+		var oDate=new Date();
+		oDate.setDate(oDate.getDate()+20);
+		document.cookie='name=www.open.com.cn;expires='+oDate;
+	});
+	</script>
+</head>
+<body>
+	<div id="mask"></div>
+	<div id="step">
+		<div class="stepA">
+			<a href="#">下一步</a>
+			<span>关闭</span>
+		</div>
+		<div class="stepB">
+			<a href="#">下一步</a>
+			<span>关闭</span>
+		</div>
+		<div class="stepC">
+			<a href="#">下一步</a>
+			<span>关闭</span>
+		</div>
+		<div class="stepD">
+			<a href="#">下一步</a>
+			<span>关闭</span>
+		</div>
+		<div class="stepE">
+			<a href="#">下一步</a>
+		</div>
+	</div>
+</body>
+</html>

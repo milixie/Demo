@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>手风琴效果</title>
+	<style type="text/css">
+		* {
+		  margin: 0;
+		  padding: 0;
+		  -webkit-box-sizing: border-box;
+		  -moz-box-sizing: border-box;
+		  box-sizing: border-box;
+		  font-family: 'å¾®è½¯é›…é»‘';
+		}
+
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed,
+		figure, figcaption, footer, header, hgroup,
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+		  margin: 0;
+		  padding: 0;
+		  border: 0;
+		  font: inherit;
+		  font-size: 100%;
+		  vertical-align: baseline;
+		}
+
+		html {
+		  line-height: 1;
+		}
+
+		ol, ul {
+		  list-style: none;
+		}
+
+		table {
+		  border-collapse: collapse;
+		  border-spacing: 0;
+		}
+
+		caption, th, td {
+		  text-align: left;
+		  font-weight: normal;
+		  vertical-align: middle;
+		}
+
+		q, blockquote {
+		  quotes: none;
+		}
+		q:before, q:after, blockquote:before, blockquote:after {
+		  content: "";
+		  content: none;
+		}
+
+		a img {
+		  border: none;
+		}
+
+		article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+		  display: block;
+		}
+
+		.wrap {
+		  width: 942px;
+		  height: 122px;
+		  border: 1px solid #ccc;
+		}
+		.wrap ul {
+		  width: 942px;
+		  height: 120px;
+		}
+		.wrap ul * {
+		  transition: all linear 0.1s;
+		}
+		.wrap ul li {
+		  width: 210px;
+		  overflow: hidden;
+		  list-style: none;
+		  float: left;
+		}
+		.wrap ul li a {
+		  position: relative;
+		  text-decoration: none;
+		  display: block;
+		  width: 210px;
+		  height: 120px;
+		}
+		.wrap ul li a img {
+		  position: absolute;
+		  bottom: 0;
+		  right: -10px;
+		  width: 60%;
+		}
+		.wrap ul li a div {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 120px;
+		  overflow: hidden;
+		  padding: 6px;
+		  z-index: 90;
+		}
+		.wrap ul li a div h4 {
+		  color: #ee0666;
+		}
+		.wrap ul li a div .describe {
+		  font-size: 12px;
+		  color: #918f8f;
+		  width: 120px;
+		  overflow: hidden;
+		  margin: 4px 0;
+		}
+		.wrap ul li a div .cut {
+		  font-size: 14px;
+		  color: #ee0666;
+		  font-style: italic;
+		}
+		.wrap ul li a div .cut strong {
+		  font-size: 16px;
+		}
+		.wrap ul li a div .display {
+		  font-size: 12px;
+		  color: #ee0666;
+		}
+		.wrap ul li a .line {
+		  display: block;
+		  width: 1px;
+		  height: 120px;
+		  position: absolute;
+		  right: 0;
+		  border-right: 1px dashed #ccc;
+		}
+		.wrap ul li a .mask {
+		  width: 210px;
+		  height: 120px;
+		  background: #000;
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  opacity: 0.1;
+		  flater: alpha(opacity=1);
+		  display: none;
+		}
+		.wrap ul li.big {
+		  width: 310px;
+		}
+		.wrap ul li.big a {
+		  position: relative;
+		  text-decoration: none;
+		  display: block;
+		  width: 310px;
+		  height: 120px;
+		}
+		.wrap ul li.big a img {
+		  position: absolute;
+		  bottom: 0;
+		  right: 0px;
+		}
+		.wrap ul li.big a div {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 150px;
+		  overflow: hidden;
+		  padding: 8px 20px;
+		  z-index: 90;
+		}
+		.wrap ul li.big a div h4 {
+		  color: #ee0666;
+		  font-size: 20px;
+		}
+		.wrap ul li.big a div .describe {
+		  font-size: 14px;
+		  color: #918f8f;
+		  width: 120px;
+		  overflow: hidden;
+		  margin: 4px 0;
+		}
+		.wrap ul li.big a div .cut {
+		  font-size: 16px;
+		  color: #ee0666;
+		  font-style: italic;
+		}
+		.wrap ul li.big a div .cut strong {
+		  font-size: 18px;
+		}
+		.wrap ul li.big a div .display {
+		  font-size: 13px;
+		  color: #ee0666;
+		}
+		.wrap ul li.big a .line {
+		  display: block;
+		  width: 1px;
+		  height: 120px;
+		  position: absolute;
+		  right: 0;
+		  border-right: 1px dashed #ccc;
+		}
+		.wrap ul li.big a .mask {
+		  width: 210px;
+		  height: 120px;
+		  background: #000;
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  opacity: 0;
+		  flater: alpha(opacity=0);
+		}
+
+	</style>
+	
+</head>
+<body>
+	<div class="wrap">
+		<ul id="wrap_ul">
+			<li class="big">
+				<a href="#">
+					<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/accordion_1.jpg" alt="">
+					<div>
+						<h4>聚美优品</h4>
+						<p class="describe">夏日防晒超值装</p>
+						<p class="cut"><strong>2</strong>折起</p>
+						<i class="display">进入抢购专题>></i>
+					</div>
+					<i class="line"></i>
+					<i class="mask"></i>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/accordion_2.jpg" alt="">
+					<div>
+						<h4>聚美优品</h4>
+						<p class="describe">夏日防晒超值装</p>
+						<p class="cut"><strong>2</strong>折起</p>
+						<i class="display">进入抢购专题>></i>
+					</div>
+					<i class="line"></i>
+					<i class="mask"></i>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/accordion_3.jpg" alt="">
+					<div>
+						<h4>聚美优品</h4>
+						<p class="describe">夏日防晒超值装</p>
+						<p class="cut"><strong>2</strong>折起</p>
+						<i class="display">进入抢购专题>></i>
+					</div>
+					<i class="line"></i>
+					<i class="mask"></i>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/accordion_4.jpg" alt="">
+					<div>
+						<h4>聚美优品</h4>
+						<p class="describe">夏日防晒超值装</p>
+						<p class="cut"><strong>2</strong>折起</p>
+						<i class="display">进入抢购专题>></i>
+					</div>
+					<i class="mask"></i>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<script type="text/javascript" src="http://g.tbcdn.cn/kissy/k/1.4.4/seed.js" data-config="{combine:true}"></script>
+	<script type="text/javascript">
+	window.onload=function () {
+		var oUl=document.getElementById('wrap_ul');
+		var oLi=oUl.getElementsByTagName('li');
+		var aI=oUl.getElementsByClassName('mask');
+		
+		//方法一
+		for(var i=0;i<oLi.length;i++){
+			var iNow=i;
+			oLi[i].index=i;
+			oLi[i].onmouseover=function(){				
+				for(var i=0;i<oLi.length;i++){
+					oLi[i].className='';
+					aI[i].style.display='block';					
+				}
+				this.className='big';
+			};
+			oLi[i].onmouseout=function(){
+				for(var i=0;i<oLi.length;i++){
+					aI[i].style.display='none';					
+				}
+			}
+		}
+		//方法二，使用js的原生代码，绑定函数等
+		/*for(var i=0;i<oLi.length;i++){
+			bind(oLi[i],'mouseover',mouseoverHander);
+		}
+		function mouseoverHander(e){
+			var target = e.target || e.srcElement;
+			for(var i=0;i<oLi.length;i++){
+				oLi[i].className = '';
+			}
+			while(target.tagName != 'LI' && target.tagName != 'BODY'){
+				target = target.parentNode;
+			}
+			target.className='big';
+		}
+		function bind(el,eventType,callback){
+			if(el.addEventListener){
+				el.addEventListener(eventType,callback,false);
+			}else if(el.attechEvent){
+				el.attechEvent('on'+eventType,callback);     
+			}else{
+				el['on'+eventType]=callback;
+			}
+		}*/
+	};
+	
+	</script>
+</body>
+</html>

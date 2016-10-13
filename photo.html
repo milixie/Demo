@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>照片墙</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	ul{
+		width: 700px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	ul li{
+		list-style: none;
+		float: left;
+		margin: 10px;
+	}
+	body{
+		text-align: center;
+	}
+	#btn {
+		width: 100px;
+		margin: 80px 20px 30px;
+		padding: 10px;
+		background: lightblue;
+		border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-o-border-radius: 5px;
+		outline: none;
+	}
+	</style>
+</head>
+<body>
+	<input type="button" id="btn" value="随机">
+	<ul>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_1.png" alt=""></li>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_2.png" alt=""></li>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_3.png" alt=""></li>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_4.png" alt=""></li>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_5.png" alt=""></li>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_6.png" alt=""></li>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_7.png" alt=""></li>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_8.png" alt=""></li>
+		<li><img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/photo_9.png" alt=""></li>
+	</ul>
+	<script type="text/javascript" src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/js/move.js"></script>
+	<script>
+	window.onload = function(){
+		var oLi = document.getElementsByTagName('li');
+		var arr = [];
+		var zIndex = 2;
+		var oBtn = document.getElementById('btn');
+
+		for( var i = 0 ; i < oLi.length ; i++ ){
+			arr.push([oLi[i].offsetLeft,oLi[i].offsetTop]);
+		}
+		for( var i = 0; i < oLi.length ; i++ ){
+			oLi[i].style.position = 'absolute';
+			oLi[i].style.left = arr[i][0] + 'px';
+			oLi[i].style.top = arr[i][1] + 'px';
+			oLi[i].style.margin = 0;
+		}
+		for(var i = 0 ; i < oLi.length; i++){
+			oLi[i].index = i;
+			drag(oLi[i]);
+		}
+		function drag(obj){
+			obj.onmousedown = function(ev){
+				var ev = ev || window.event;
+				var num = this.index;
+				var disX = ev.clientX - obj.offsetLeft;
+				var disY = ev.clientY - obj.offsetTop;
+				obj.style.zIndex = zIndex++;
+				document.onmousemove = function(ev){
+					var ev = ev || window.event;
+					obj.style.left = ev.clientX - disX + 'px';
+					obj.style.top = ev.clientY - disY + 'px';
+				}
+				document.onmouseup = function(){
+					document.onmouseup = null;
+					document.onmousemove = null;
+
+					var nL = nearLi(obj);
+					var temp = 0;
+
+					if(nL){
+						startMove(nL,{left: arr[obj.index][0],top: arr[obj.index][1]});
+						startMove(obj,{left: nL.offsetLeft,top: nL.offsetTop});
+						temp = obj.index;
+						obj.index = nL.index;
+						nL.index = temp;
+					}else{
+						startMove(obj,{left: arr[obj.index][0],top: arr[obj.index][1]});
+					}
+
+					
+				}
+				return false;
+			};
+		}
+		function nearObj(obj1,obj2){
+			var L1 = obj1.offsetLeft,
+				Lw1 = obj1.offsetWidth + obj1.offsetLeft,
+				T1 = obj1.offsetTop,
+				Th1 = obj1.offsetHeight + obj1.offsetTop;
+			var	L2 = obj2.offsetLeft,
+				Lw2 = obj2.offsetWidth + obj2.offsetLeft,
+				T2 = obj2.offsetTop,
+				Th2 = obj2.offsetHeight + obj2.offsetTop;
+			if(L1 > Lw2 || Lw1 < L2 || T1 > Th2 || Th1 < T2){
+				return false;
+			}else{
+				return true;
+			}
+		}
+		function gougu(obj1,obj2){
+			var a = obj1.offsetLeft - obj2.offsetLeft;
+			var b = obj1.offsetTop - obj2.offsetTop;
+			return Math.sqrt(a*a + b*b);
+		}
+		function nearLi(obj){
+			var curindex = -1;
+			var value = 9999;				
+			for(var i = 0 ; i < oLi.length;i ++){
+				var near = nearObj(obj,oLi[i]);		
+				if(near && obj != oLi[i]){
+					var c = gougu(oLi[i],obj);
+					if(c < value){
+						value = c;
+						curindex = i;								
+					}							
+				}
+			}
+			if(curindex != -1){
+				return oLi[curindex];
+			}else{
+				return false;
+			}
+		}
+		oBtn.onclick = function(){
+			var ramd = [0,1,2,3,4,5,6,7,8];
+			ramd.sort(function(n1,n2){
+				return Math.random() - 0.5;
+			});
+			for(var i = 0 ; i < oLi.length;i ++){
+				startMove(oLi[i],{left: arr[ramd[i]][0],top: arr[ramd[i]][1]});
+				oLi[i].index = ramd[i];
+			}
+		};
+	};
+	</script>
+</body>
+</html>

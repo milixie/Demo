@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>苹果菜单</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	.menu{
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		text-align: center;
+	}
+	.menu img{
+		width: 64px;
+		margin-right: 20px;
+	}
+	</style>
+	<script>
+	window.onload = function(){
+		var oInput = document.getElementsByTagName('input');
+		var oMenu = document.getElementById('menu');
+		var oImg = oMenu.getElementsByTagName('img');
+
+		document.onmousemove = function(ev){
+			var ev = ev || window.event;
+			for(var i = 0; i < oImg.length; i++){
+				var oImgCenterL = oImg[i].offsetLeft + oImg[i].offsetWidth/2,
+					oImgCenterT = oMenu.offsetTop + oImg[i].offsetHeight/2;
+
+				var disX = ev.clientX - oImgCenterL,
+					disY = oImgCenterT - ev.clientY,
+					disHyp = Math.sqrt(Math.pow(disX,2) + Math.pow(disY,2)),
+					scale = 1 - parseFloat(disHyp/300);
+
+				oInput[i].value = scale;
+
+				if(scale < 0.5){
+					scale = 0.5;
+				}else{
+					oImg[i].style.width = 128 * scale + 'px';
+					oImg[i].style.height = 128 * scale + 'px';
+				}
+			}
+		}
+
+	};
+	</script>
+</head>
+<body>
+	<input type="text">
+	<input type="text">
+	<input type="text">
+	<input type="text">
+	<input type="text">
+	<div id="menu" class="menu">
+		<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/1.png" alt="">
+		<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/2.png" alt="">
+		<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/3.png" alt="">
+		<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/4.png" alt="">
+		<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/5.png" alt="">
+	</div>
+</body>
+</html>

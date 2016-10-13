@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<title>弹窗</title>
+	<style>
+		#wrap{
+			width:200px;
+			height:200px;
+			background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/drag.jpg) no-repeat;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+	<div id = "wrap"></div>
+	<script type = "text/javascript">
+	window.onload = function  () {
+		var oWrap = document.getElementById('wrap'),
+				disX = 0,
+				disY = 0;
+
+		oWrap.onmousedown = function(ev){
+			ev = ev || window.event;
+			disX = ev.clientX - oWrap.offsetLeft;
+			disY = ev.clientY - oWrap.offsetTop;
+
+			if(oWrap.setCapture){
+				oWrap.setCapture();  //全局捕获（生成一个透明的层）
+			}
+
+			document.onmousemove = function(ev){
+				ev = ev || window.event;
+
+				var currentX = ev.clientX - disX,
+						currentY = ev.clientY - disY;
+				if (currentX < 0) {
+					currentX = 0;
+				}
+				if (currentX > document.documentElement.clientWidth - oWrap.clientWidth){
+					currentX = document.documentElement.clientWidth - oWrap.clientWidth;
+				}
+				if (currentY < 0){
+					currentY = 0;
+				}
+				if (currentY > document.documentElement.clientHeight - oWrap.clientHeight){
+					currentY = document.documentElement.clientHeight - oWrap.clientHeight;
+				}
+				oWrap.style.left = currentX + 'px';
+				oWrap.style.top = currentY + 'px';
+			};
+
+			document.onmouseup = function(){
+				document.onmousemove = null;  
+				document.onmouseup = null;
+				if(oWrap.releaseCapture){
+					oWrap.releaseCapture();  //释放全局捕获(删除层)
+				}
+			};
+
+			return false;
+		};
+		 
+	}
+		
+	</script>
+</body>
+</html>

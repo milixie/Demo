@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<title>图片裁剪</title>
+	<style type = "text/css">
+	*{
+		margin:0;
+		padding:0;
+		box-sizing:border-box;
+		-webkit-box-sizing:border-box;
+		-moz-box-sizing:border-box;
+	}
+	body{
+		background: #333;
+	}
+	#box{
+		position: absolute;
+		top:100px;
+		left:100px;
+		width:580px;
+		height:414px;
+	}
+	#box img{
+		position: absolute;
+		left:0;
+		top:0;
+	}
+	#img1{
+		opacity: 0.5;
+	}
+	#img2,#img3{
+		clip:rect(0,200px,200px,0);
+	}
+	#rDiv{
+		width:580px;
+		height: 414px;
+		position: absolute;
+		top:100px;
+		left:700px;
+	}
+	#img3{
+		position: absolute;
+		top:0;
+		left:0;
+	}
+	#pos{
+		position: absolute;
+		top:0;
+		left:0;
+		width:200px;
+		height:200px;
+		border:1px solid #fff;
+	}
+	#content{
+		width:180px;
+		height:180px;
+		position: absolute;
+		top:10px;
+		left:10px;
+		cursor:move;
+	}
+	.publicClass{
+		position: absolute;
+		width:8px;
+		height:8px;
+		background: #fff;
+	}
+	#left-top{
+		top:-4px;
+		left:-4px;
+		cursor: nw-resize;
+	}
+	#center-top{
+		top:-4px;
+		left:50%;
+		margin-left: -4px;
+		cursor:n-resize;
+	}
+	#right-top{
+		top:-4px;
+		right: -4px;
+		cursor:ne-resize;
+	}
+	#left-center{
+		left:-4px;
+		top:50%;
+		cursor: w-resize;
+		margin-top: -4px;
+	}
+	#right-center{
+		right:-4px;
+		top:50%;
+		margin-top: -4px;
+		cursor:e-resize;
+	}
+	#left-bottom{
+		bottom:-4px;
+		left:-4px;
+		cursor: sw-resize;
+	}
+	#center-bottom{
+		bottom:-4px;
+		left:50%;
+		margin-left: -4px;
+		cursor: s-resize;
+	}
+	#right-bottom{
+		right:-4px;
+		bottom:-4px;
+		cursor: se-resize;
+	}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<img src="img/bg.jpg" id="img1" alt="">
+		<img src="img/bg.jpg" id="img2" alt="">
+		<div id="pos">
+			<div id="content"></div>
+			<div class="publicClass" id="left-top"></div>
+			<div class="publicClass" id="center-top"></div>
+			<div class="publicClass" id="right-top"></div>
+			<div class="publicClass" id="left-center"></div>
+			<div class="publicClass" id="right-center"></div>
+			<div class="publicClass" id="left-bottom"></div>
+			<div class="publicClass" id="center-bottom"></div>
+			<div class="publicClass" id="right-bottom"></div>
+		</div>
+	</div>
+	<div id = 'rDiv'>
+		<img src = "img/bg.jpg" id = "img3" alt = "">
+	</div>
+
+	<script type = "text/javascript">
+		window.onload = function(){
+			document.onselectstart = new Function('event.returnValue = false;');
+			var oBox = document.getElementById('box'),
+					oImg1 = document.getElementById('img1'),
+					oImg2 = document.getElementById('img2'),
+					oImg3 = document.getElementById('img3'),
+					oPos = document.getElementById('pos'),
+					oContent = document.getElementById('content'),
+					oLeftTop = document.getElementById('left-top'),
+					oCenterTop = document.getElementById('center-top'),
+					oRightTop = document.getElementById('right-top'),
+					oLeftCenter = document.getElementById('left-center'),
+					oRightCenter = document.getElementById('right-center'),
+					oLeftBottom = document.getElementById('left-bottom'),
+					oCenterBottom = document.getElementById('center-bottom'),
+					oRightBottom = document.getElementById('right-bottom'),
+					boxW = oBox.offsetWidth,
+					boxH = oBox.offsetHeight;
+			oContent.onmousedown = function(e){
+
+				var e  =  e || window.event;
+
+				var boxX = oBox.offsetLeft + oPos.offsetLeft;
+				var boxY = oBox.offsetTop + oPos.offsetTop;
+
+				var disX = e.clientX - boxX;
+				var disY = e.clientY - boxY;
+
+				document.onmousemove = function(e){
+
+					var e  =  e || window.event;
+
+					var offL = e.clientX - oBox.offsetLeft - disX;
+					var offT = e.clientY - oBox.offsetTop - disY;
+
+					if(offL < 0){
+						offL = 0;
+					}else if(offL > boxW - oPos.offsetWidth){
+						offL = boxW - oPos.offsetWidth;
+					}
+
+					if(offT < 0){
+						offT = 0;
+					}else if(offT > boxH - oPos.offsetHeight){
+						offT = boxH - oPos.offsetHeight;
+					}
+
+					var rectR = offL + oPos.offsetWidth;
+					var rectB = offT + oPos.offsetHeight;
+
+					oPos.style.left = offL + 'px';
+					oPos.style.top = offT + 'px';
+
+					var imgT = oPos.offsetTop;
+					var imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+
+					oImg2.style.clip = "rect(" + offT + 'px,' + rectR + 'px,' + rectB + 'px,' + offL + 'px' + ")";
+					oImg3.style.clip = "rect(" + offT + 'px,' + rectR + 'px,' + rectB + 'px,' + offL + 'px' + ")";
+				};
+				document.onmouseup = function(){
+					document.onmouseup = null;
+					document.onmousemove = null;
+				};
+			};
+			oRightCenter.onmousedown = function(e){
+				e.stopPropagation();   //阻止冒泡
+				toRight();
+			};
+			function toRight(){
+				window.onmousemove = function(e){
+
+					e  =  e || window.event;
+					var posW = oPos.offsetWidth,
+							disX = oBox.offsetLeft + oPos.offsetLeft + posW,
+							nowW = e.clientX - disX + posW;
+
+					if(nowW > boxW - oPos.offsetLeft){
+						nowW = boxW - oPos.offsetLeft;
+					}else if(nowW < 100){
+						nowW = 100;
+					}
+
+					oPos.style.width = nowW + 'px';
+					oContent.style.width = nowW - 20 + 'px';
+
+					var clipR = nowW + oPos.offsetLeft,
+							clipB = oPos.offsetHeight + oPos.offsetTop,
+							imgT = oPos.offsetTop,
+							imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+
+					oImg2.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+					oImg3.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+				};
+				window.onmouseup = function(){
+					window.onmouseup = null;
+					window.onmousemove = null;
+				};
+			}
+			oCenterBottom.onmousedown = function(e){
+				e.stopPropagation();   //阻止冒泡
+				toBottom();
+			};
+			function toBottom(){
+				window.onmousemove = function(e){
+					e  =  e || window.event;
+
+					var posH = oPos.offsetHeight,
+							disY = oBox.offsetTop + oPos.offsetTop + posH,
+							nowH = e.clientY - disY + posH;
+
+					if(nowH > boxH - oPos.offsetTop){
+						nowH = boxH - oPos.offsetTop;
+					}else if(nowH < 100){
+						nowH = 100;
+					}
+
+					oPos.style.height = nowH + 'px';
+					oContent.style.height = nowH - 20 + 'px';
+
+					var clipR = oPos.offsetWidth + oPos.offsetLeft,
+							clipB = nowH + oPos.offsetTop,
+							imgT = oPos.offsetTop,
+							imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+
+					oImg2.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+					oImg3.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+				};
+				window.onmouseup = function(){
+					window.onmouseup = null;
+					window.onmousemove = null;
+				};
+			}
+			oRightBottom.onmousedown = function(e){
+				e.stopPropagation();   //阻止冒泡
+				toRightBottom();
+			};
+			function toRightBottom(){
+				window.onmousemove = function(e){
+
+					e  =  e || window.event;
+
+					var posW = oPos.offsetWidth,
+							disX = oBox.offsetLeft + oPos.offsetLeft + posW,
+							nowW = e.clientX - disX + posW;
+
+					if(nowW > boxW - oPos.offsetLeft){
+						nowW = boxW - oPos.offsetLeft;
+					}else if(nowW < 100){
+						nowW = 100;
+					}
+
+					oPos.style.width = nowW + 'px';
+					oContent.style.width = nowW - 20 + 'px';
+
+					var posH = oPos.offsetHeight,
+							disY = oBox.offsetTop + oPos.offsetTop + posH,
+							nowH = e.clientY - disY + posH;
+
+					if(nowH > boxH - oPos.offsetTop){
+						nowH = boxH - oPos.offsetTop;
+					}else if(nowH < 100){
+						nowH = 100;
+					}
+
+					oPos.style.height = nowH + 'px';
+					oContent.style.height = nowH - 20 + 'px';
+
+					var clipR = oPos.offsetWidth + oPos.offsetLeft,
+							clipB = oPos.offsetHeight + oPos.offsetTop,
+							imgT = oPos.offsetTop,
+							imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+
+					oImg2.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+					oImg3.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+				};
+				window.onmouseup = function(){
+					window.onmouseup = null;
+					window.onmousemove = null;
+				};
+			};
+			oRightTop.onmousedown = function(e){
+				e.stopPropagation();   //阻止冒泡
+				toRightTop();
+			};
+			function toRightTop(){
+				window.onmousemove = function(e){
+					
+					e  =  e || window.event;
+
+					var posW = oPos.offsetWidth,
+							disX = oBox.offsetLeft + oPos.offsetLeft + posW,
+							nowW = e.clientX - disX + posW;
+
+					if(nowW > boxW - oPos.offsetLeft){
+						nowW = boxW - oPos.offsetLeft;
+					}else if(nowW < 100){
+						nowW = 100;
+					}
+
+					oPos.style.width = nowW + 'px';
+					oContent.style.width = nowW - 20 + 'px';
+
+					var posH = oPos.offsetHeight,
+							disY = oBox.offsetTop + oPos.offsetTop + posH,
+							nowH = disY - e.clientY,
+							toT = e.clientY - oBox.offsetTop;
+
+					if(toT < 0){
+						toT = 0;
+					}else if(toT > boxH - 100){
+						toT = boxH - 100;
+					}
+
+					oPos.style.top = toT + 'px';
+					if(nowH > boxH - oPos.offsetTop){
+						nowH = boxH - oPos.offsetTop;
+					}else if(nowH < 100){
+						nowH = 100;
+					}
+
+					oPos.style.height = nowH + 'px';
+					oContent.style.height = nowH - 20 + 'px';
+					
+					var clipR = oPos.offsetWidth + oPos.offsetLeft,
+							clipB = oPos.offsetHeight + oPos.offsetTop,
+							imgT = oPos.offsetTop,
+							imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+					oImg2.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+					oImg3.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+				};
+				window.onmouseup = function(){
+					window.onmouseup = null;
+					window.onmousemove = null;
+				};
+			}
+			oCenterTop.onmousedown = function(e){
+				e.stopPropagation();   //阻止冒泡
+				toTop();
+			};
+			function toTop(){
+				var oldB = boxH - oPos.offsetTop - oPos.offsetHeight;
+				window.onmousemove = function(e){
+					
+					e  =  e || window.event;
+
+					var posH = oPos.offsetHeight,
+							disY = oBox.offsetTop + oPos.offsetTop + posH,
+							nowH = disY - e.clientY,
+							toT = e.clientY - oBox.offsetTop;
+
+					if(toT < 0){
+						toT = 0;
+					}else if(toT > boxH - 100 - oldB){
+						toT = boxH - 100 - oldB;
+					}
+
+					oPos.style.top = toT + 'px';
+
+					if(nowH > boxH - oPos.offsetTop){
+						nowH = boxH - oPos.offsetTop;
+					}else if(nowH < 100){
+						nowH = 100;
+					}
+					
+					oPos.style.height = nowH + 'px';
+					oContent.style.height = nowH - 20 + 'px';
+
+					var clipR = oPos.offsetWidth + oPos.offsetLeft,
+							clipB = nowH + oPos.offsetTop,
+							imgT = oPos.offsetTop,
+							imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+
+					oImg2.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+					oImg3.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+				};
+				window.onmouseup = function(){
+					window.onmouseup = null;
+					window.onmousemove = null;
+				};
+			};
+			oLeftBottom.onmousedown = function(e){
+				e.stopPropagation();   //阻止冒泡
+				toLeftBottom();
+			};
+			function toLeftBottom(){
+				var toR = boxW - oPos.offsetLeft - oPos.offsetWidth;
+				window.onmousemove = function(e){
+					e  =  e || window.event;
+
+					var posW = oPos.offsetWidth,
+							disX = oBox.offsetLeft + oPos.offsetLeft + posW,
+							nowW = disX - e.clientX,
+							toL = e.clientX - oBox.offsetLeft;
+
+					if(toL < 0){
+						toL = 0;
+					}else if(toL > boxW - 100 - toR){
+						toL = boxW - 100 - toR;
+					}
+
+					oPos.style.left = toL + 'px';
+
+					if(nowW > boxW - oPos.offsetLeft){
+						nowW = boxW - oPos.offsetLeft;
+					}else if(nowW < 100){
+						nowW = 100;
+					}
+					oPos.style.width = nowW + 'px';
+
+					oContent.style.width = nowW - 20 + 'px';
+					var posH = oPos.offsetHeight,
+							disY = oBox.offsetTop + oPos.offsetTop + posH,
+							nowH = e.clientY - disY + posH;
+
+					if(nowH > boxH - oPos.offsetTop){
+						nowH = boxH - oPos.offsetTop;
+					}else if(nowH < 100){
+						nowH = 100;
+					}
+
+					oPos.style.height = nowH + 'px';
+					oContent.style.height = nowH - 20 + 'px';
+
+					var clipR = oPos.offsetWidth + oPos.offsetLeft,
+							clipB = oPos.offsetHeight + oPos.offsetTop,
+							imgT = oPos.offsetTop,
+							imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+					oImg2.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+					oImg3.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+				};
+				window.onmouseup = function(){
+					window.onmouseup = null;
+					window.onmousemove = null;
+				};
+			}
+			oLeftCenter.onmousedown = function(e){
+				e.stopPropagation();   //阻止冒泡
+				toLeftCenter();
+			};
+			function toLeftCenter(){
+				var toR = boxW - oPos.offsetLeft - oPos.offsetWidth;
+				window.onmousemove = function(e){
+					e  =  e || window.event;
+					var posW = oPos.offsetWidth,
+							disX = oBox.offsetLeft + oPos.offsetLeft + posW,
+							nowW = disX - e.clientX,
+							toL = e.clientX - oBox.offsetLeft;
+
+					if(toL < 0){
+						toL = 0;
+					}else if(toL > boxW - 100 - toR){
+						toL = boxW - 100 - toR;
+					}
+					oPos.style.left = toL + 'px';
+
+					if(nowW > boxW - oPos.offsetLeft){
+						nowW = boxW - oPos.offsetLeft;
+					}else if(nowW < 100){
+						nowW = 100;
+					}
+					oPos.style.width = nowW + 'px';
+
+					oContent.style.width = nowW - 20 + 'px';
+					var clipR = oPos.offsetWidth + oPos.offsetLeft,
+							clipB = oPos.offsetHeight + oPos.offsetTop,
+							imgT = oPos.offsetTop,
+							imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+
+					oImg2.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+					oImg3.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+				};
+				window.onmouseup = function(){
+					window.onmouseup = null;
+					window.onmousemove = null;
+				};			
+			}
+			oLeftTop.onmousedown = function(e){
+				e.stopPropagation();   //阻止冒泡
+				toLeftTop();
+			};
+			function toLeftTop(){
+				var toR = boxW - oPos.offsetLeft - oPos.offsetWidth,
+						oldB = boxH - oPos.offsetTop - oPos.offsetHeight;
+				window.onmousemove = function(e){
+					e  =  e || window.event;
+					var posH = oPos.offsetHeight,
+							disY = oBox.offsetTop + oPos.offsetTop + posH,
+							nowH = disY - e.clientY,
+							toT = e.clientY - oBox.offsetTop,
+							posW = oPos.offsetWidth,
+							disX = oBox.offsetLeft + oPos.offsetLeft + posW,
+							nowW = disX - e.clientX,
+							toL = e.clientX - oBox.offsetLeft;
+
+					if(toL < 0){
+						toL = 0;
+					}else if(toL > boxW - 100 - toR){
+						toL = boxW - 100 - toR;
+					}
+					oPos.style.left = toL + 'px';
+
+					if(toT < 0){
+						toT = 0;
+					}else if(toT > boxH - 100 - oldB){
+						toT = boxH - 100 - oldB;
+					}
+					oPos.style.top = toT + 'px';
+
+					if(nowH > boxH - oPos.offsetTop){
+						nowH = boxH - oPos.offsetTop;
+					}else if(nowH < 100){
+						nowH = 100;
+					}
+					
+					oPos.style.height = nowH + 'px';
+					oContent.style.height = nowH - 20 + 'px';
+
+					if(nowW > boxW - oPos.offsetLeft){
+						nowW = boxW - oPos.offsetLeft;
+					}else if(nowW < 100){
+						nowW = 100;
+					}
+					oPos.style.width = nowW + 'px';
+					oContent.style.width = nowW - 20 + 'px';
+
+					var clipR = oPos.offsetWidth + oPos.offsetLeft,
+							clipB = nowH + oPos.offsetTop,
+							imgT = oPos.offsetTop,
+							imgL = oPos.offsetLeft;
+
+					oImg3.style.top =  - imgT + 'px';
+					oImg3.style.left =  - imgL + 'px';
+					
+					oImg2.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+					oImg3.style.clip = "rect(" + oPos.offsetTop + 'px,' + clipR + 'px,' + clipB + 'px,' + oPos.offsetLeft + 'px' + ")";
+				};
+				window.onmouseup = function(){
+					window.onmouseup = null;
+					window.onmousemove = null;
+				};
+			}
+		};
+	</script> 
+</body>
+</html>

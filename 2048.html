@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>2048</title>
+	<style type="text/css">
+	body{
+		text-align: center;
+	}
+	button{
+		width: 120px;
+		margin: 30px;
+		background: #805B26;
+		padding: 10px;
+		border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-o-border-radius: 5px;
+		color: #fff;
+		font-size: 20px;
+		outline: none;
+		/*border: 0;*/
+		cursor: pointer;
+	}
+	table{
+		position: absolute;
+		top: 180px;
+		left: 50%;
+		margin-left: -190px;
+		width: 380px;
+		height: 380px;
+		background: #E2B21A;
+		border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-o-border-radius: 5px;
+	}
+	table td{
+		width: 25%;
+		height: 25%;
+		border: 2px solid #E2B21A;
+		background: #805B26;
+		font-size: 32px;
+		font-family: microsoft yahei;
+		color: #f0f0f0;
+		text-align: center;
+	}
+	table .td2{
+		background: #9C702F;
+	}
+	table .td4{
+		background: #B48136;
+	}
+	table .td8{
+		background: #CA9240;
+	}
+	table .td16{
+		background: #DF9E3E;
+	}
+	table .td32{
+		background: #EBB74B;
+	}
+	table .td64{
+		background: #FCC95F;
+	}
+	table .td128{
+		background: #FAC16D;
+	}
+	table .td256{
+		background: #E9DB36;
+	}
+	table .td512{
+		background: #F5E84B;
+	}
+	table .td1024{
+		background: #FCE907;
+	}
+	</style>
+</head>
+<body>
+	<button>开始游戏</button>
+	<p>温馨提示：点击 开始游戏 ，然后使用 ↑、↓、←、→箭头玩游戏</p>
+	<table id="table">
+		<tbody>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+	<script type="text/javascript">
+	var oBtn = document.getElementsByTagName('button')[0],
+			oTabel = document.getElementById('table'),
+			oTr = oTabel.getElementsByTagName('tr'),
+			oTd = oTabel.getElementsByTagName('td'),
+			flag = 0,
+			able = true;
+	oBtn.onclick = function(){
+		//按下按键
+		if (able){
+			alert('游戏开始啦！！！');
+			keyDown();
+		} else {
+			alert('游戏正在进行！！！');
+		}
+		if(flag === 1 || flag === 2){
+			location.reload();
+		}
+	};
+	
+	for(var x = 0 ; x < oTd.length; x++){
+		oTd[x].index = x;
+	}
+	//产生随机数2
+	function rand(){
+		var num;
+		if(randCount(0.2)){
+			num = Math.ceil(Math.random()) + 1;    //随机产生随机数2
+		}else{
+			num = Math.ceil(Math.random()) + 3;    //随机产生随机数4
+		}
+		return num;
+	}
+	//产生随机数1-n
+	function randNum(n){
+		var randNum = Math.ceil(Math.random() * n);  //随机产生随机数1-n
+		return randNum;
+	}
+	//获得当前的按键相对应的码
+	function currentKey(){
+		var keycode = '';
+		if(navigator.appName == 'Microsoft Internet Explorer'){
+			keycode = event.keyCode;
+		}else{
+			keycode = currentKey.caller.arguments[0].which;
+		}
+		return keycode;
+	}
+	//获得当前没有值的空的td
+	function getNullTd(){
+		var arrTd = [];
+		for(var j = 0 ; j < oTd.length ; j++){
+			if(oTd[j].innerHTML == ''){
+				arrTd.push(oTd[j].index);
+			}
+		}
+		return arrTd;
+	}
+	//产生随机数0或1
+	function randCount(n){
+		var randCount = Math.ceil(Math.random() - n);   //n>0.5  几率小
+		return randCount;
+	}
+	var oTrTd = new Array();
+	function getCurrentTd(){
+		for(var i = 0; i < oTr.length; i++){
+			var aTd = oTr[i].getElementsByTagName('td');
+			oTrTd[i] = new Array();
+			for(var j = 0; j < aTd.length; j++){
+				oTrTd[i][j] = aTd[j].innerHTML;
+			}
+		}
+		return oTrTd;
+	}
+	function keyDown(){
+		able = false;
+		//按下按键
+		document.onkeydown = function(){
+			if(currentKey() > 40 || currentKey() < 37){
+				return;
+			}
+			if(!eachArr() && getNullTd().length == 0){
+				alert('Game over!!!');
+				oBtn.innerHTML = '重新开始';
+				flag = 1;
+				able = true;
+				return;
+			}
+			getCurrentTd();
+			for(var i = 0; i < oTrTd.length; i++){
+				for(var j = 0;j < oTrTd[i].length; j++){
+					if(oTrTd[i][j] == 1024){
+						alert('you are winner!!!');
+						oBtn.innerHTML = '再来一局';
+						flag = 2;
+						able = true;
+						return;
+					}
+				}
+			}
+			if(currentKey() == 37){
+				leftArrow();
+			}
+			if(currentKey() == 39){
+				rightArrow();
+			}
+			if(currentKey() == 38){
+				upArrow();
+			}
+			if(currentKey() == 40){
+				downArrow();
+			}
+			//产生或不产生新的数
+			if(randCount(0.2)){
+				fillTd();//产出随机数并填充空白的td
+			}
+			tdBgColor();
+		}
+	}
+	
+	//产出随机数并填充空白的td
+	function fillTd(){
+		var prodNum = randNum(1);    //产生1个随机数
+		var arr = [];
+		var nullTd = [];
+		for(var i = 0 ;i < prodNum; i++){
+			arr.push(rand());
+		}
+		for(var j = 0; j < prodNum; j++){
+			nullTd.push(getNullTd()[randNum(getNullTd().length) - 1]);
+		}
+		if(nullTd[0]){
+			oTd[nullTd[0]].innerHTML = rand();
+		}		
+	}
+	//按下左箭头
+	function leftArrow(){
+		for(var i = 0; i < oTrTd.length; i++){
+			var currentArr = [];  //当前每行的格子中的数的数组
+			var delNullArr = [];   //删除空格后的格子中的数的数组
+			var newArr = [];    //相加后的数组
+			for(var j = 0; j < oTrTd[i].length; j++){
+				currentArr.push(oTrTd[i][j]);
+			}
+			for(var x = 0; x < currentArr.length; x++){
+				if(currentArr[x] != ''){
+					delNullArr.push(currentArr[x]);
+				}
+			}
+			for(var y = 0; y < delNullArr.length; y++){
+				if((y+1 < delNullArr.length) && (delNullArr[y] == delNullArr[y+1])){
+					newArr.push(parseInt(delNullArr[y])+parseInt(delNullArr[y+1]));
+					y++;
+				}else{
+					newArr.push(delNullArr[y]);
+				}
+			}
+			for(var m = 0; m < oTrTd[i].length; m++){
+				oTd[4*i + m].innerHTML = '';
+			}
+			for(var z = 0; z < newArr.length; z++){
+				oTd[4*i + z].innerHTML = newArr[z];
+			}
+		}
+	}
+	//按下右箭头
+	function rightArrow(){
+		for(var i = 0; i < oTrTd.length; i++){
+			var currentArr = [];  //当前每行的格子中的数的数组
+			var delNullArr = [];   //删除空格后的格子中的数的数组
+			var newArr = [];    //相加后的数组
+			for(var j = 0; j < oTrTd[i].length; j++){
+				currentArr.push(oTrTd[i][j]);
+			}
+			for(var x = 0; x < currentArr.length; x++){
+				if(currentArr[x] != ''){
+					delNullArr.push(currentArr[x]);
+				}
+			}
+			for(var y = delNullArr.length - 1; y >= 0; y--){
+				if((y-1 >= 0) && (delNullArr[y] == delNullArr[y-1])){
+					newArr.push(parseInt(delNullArr[y])+parseInt(delNullArr[y-1]));
+					y--;
+				}else{
+					newArr.push(delNullArr[y]);
+				}
+			}
+			for(var m = 0; m < oTrTd[i].length; m++){
+				oTd[4*i + m].innerHTML = '';
+			}
+			var newArrLen = newArr.length;
+			var newArr2 = newArr.reverse();
+			for(var z = oTrTd[i].length - 1; z >= oTrTd[i].length - newArr2.length; z--){
+				if(newArrLen < 0){
+					return;
+				}
+				oTd[4*i + z].innerHTML = newArr2[newArrLen - 1];
+				newArrLen--;
+			}
+		}
+	}
+	//按下↑
+	function upArrow(){
+		for(var i = 0; i < oTrTd.length; i++){
+			var currentArr = [];  //当前每行的格子中的数的数组
+			var delNullArr = [];   //删除空格后的格子中的数的数组
+			var newArr = [];    //相加后的数组
+			for(var j = 0; j < oTrTd[i].length; j++){
+				currentArr.push(oTrTd[j][i]);
+			}
+			for(var x = 0; x < currentArr.length; x++){
+				if(currentArr[x] != ''){
+					delNullArr.push(currentArr[x]);
+				}
+			}
+			for(var y = 0; y < delNullArr.length; y++){
+				if((y+1 < delNullArr.length) && (delNullArr[y] == delNullArr[y+1])){
+					newArr.push(parseInt(delNullArr[y])+parseInt(delNullArr[y+1]));
+					y++;
+				}else{
+					newArr.push(delNullArr[y]);
+				}
+			}
+			for(var m = 0; m < oTrTd[i].length; m++){
+				oTd[4*m + i].innerHTML = '';
+			}
+			for(var z = 0; z < newArr.length; z++){
+				oTd[4*z + i].innerHTML = newArr[z];
+			}
+		}
+	}
+	//按下↓
+	function downArrow(){
+		for(var i = 0; i < oTrTd.length; i++){
+			var currentArr = [];  //当前每行的格子中的数的数组
+			var delNullArr = [];   //删除空格后的格子中的数的数组
+			var newArr = [];    //相加后的数组
+			for(var j = 0; j < oTrTd[i].length; j++){
+				currentArr.push(oTrTd[j][i]);
+			}
+			for(var x = 0; x < currentArr.length; x++){
+				if(currentArr[x] != ''){
+					delNullArr.push(currentArr[x]);
+				}
+			}
+			for(var y = delNullArr.length - 1; y >= 0; y--){
+				if((y-1 >= 0) && (delNullArr[y] == delNullArr[y-1])){
+					newArr.push(parseInt(delNullArr[y])+parseInt(delNullArr[y-1]));
+					y--;
+				}else{
+					newArr.push(delNullArr[y]);
+				}
+			}
+			for(var m = 0; m < oTrTd[i].length; m++){
+				oTd[4*m + i].innerHTML = '';
+			}
+			var newArrLen = newArr.length;
+			var newArr2 = newArr.reverse();
+			for(var z = oTrTd[i].length - 1; z >= oTrTd[i].length - newArr2.length; z--){
+				if(newArrLen < 0){
+					return;
+				}
+				oTd[4*z + i].innerHTML = newArr2[newArrLen - 1];
+				newArrLen--;
+			}
+		}
+	}
+	//遍历数组看是否还存在相邻元素值相同的情况
+	function eachArr(){
+		getCurrentTd();
+		for(var i = 0; i < oTrTd.length; i++){
+			for(var j = 0; j < oTrTd[i].length; j++){
+				if(((j+1) < oTrTd[i].length) && (oTrTd[i][j] == oTrTd[i][j+1])){
+					return true;
+				}
+				if(((j-1) >= 0) && (oTrTd[i][j] == oTrTd[i][j-1])){
+					return true;
+				}
+				if(((i+1) < oTrTd.length) && (oTrTd[i][j] == oTrTd[i+1][j])){
+					return true;
+				}
+				if(((i-1) >= 0) && (oTrTd[i][j] == oTrTd[i-1][j])){
+					return true;
+				}
+			}
+		}
+	}
+	//改变背景色
+	function tdBgColor(){
+		//getCurrentTd();
+		for(var i = 0 ; i < oTrTd.length; i++){
+			for(var j = 0 ;j < oTrTd[i].length; j++){
+				if(oTd[4*i+j].innerHTML == ''){
+					oTd[4*i + j].className = '';
+				}else if(oTd[4*i+j].innerHTML == '2'){
+					oTd[4*i + j].className = 'td2';
+				}else if(oTd[4*i+j].innerHTML == '4'){
+					oTd[4*i + j].className = 'td4';
+				}else if(oTd[4*i+j].innerHTML == '8'){
+					oTd[4*i + j].className = 'td8';
+				}else if(oTd[4*i+j].innerHTML == '16'){
+					oTd[4*i + j].className = 'td16';
+				}else if(oTd[4*i+j].innerHTML == '32'){
+					oTd[4*i + j].className = 'td32';
+				}else if(oTd[4*i+j].innerHTML == '64'){
+					oTd[4*i + j].className = 'td64';
+				}else if(oTd[4*i+j].innerHTML == '128'){
+					oTd[4*i + j].className = 'td128';
+				}else if(oTd[4*i+j].innerHTML == '256'){
+					oTd[4*i + j].className = 'td256';
+				}else if(oTd[4*i+j].innerHTML == '512'){
+					oTd[4*i + j].className = 'td512';
+				}else if(oTd[4*i+j].innerHTML == '1024'){
+					oTd[4*i + j].className = 'td1024';
+				}
+			}
+		}
+	}
+	</script>
+</body>
+</html>

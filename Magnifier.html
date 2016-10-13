@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>放大镜效果</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-o-box-sizing: border-box;
+	}
+	body{
+		padding: 40px;
+	}
+	#small-img{
+		position: relative;
+		width: 204px;
+		height: 204px;
+		border: 2px solid #e45;
+		float: left;
+		cursor: move;
+	}
+	#big{
+		position: relative;
+		width: 460px;
+		height: 460px;
+		border: 2px solid #575;
+		float: left;
+		overflow: hidden;
+	}
+	#big img{
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	#mask{
+		display: none;
+		position: absolute;
+		left: 20px;
+		top: 20px;
+		width: 100px;
+		height: 100px;
+		background: yellow;
+		opacity: 0.6;
+		filter: alpha(opacity = 60);
+	}
+	</style>
+	<script>
+	window.onload = function(){
+
+		var oSmall = document.getElementById('small-img'),
+			oMask = document.getElementById('mask'),
+			oBigImg = document.getElementById('big-img'),
+			oBig = document.getElementById('big');
+
+		oSmall.onmousemove = function(ev){
+
+			oMask.style.display = 'block';
+
+			var ev = ev || window.event;
+
+			var disX = ev.clientX - oSmall.offsetLeft - oMask.offsetWidth/2,
+				disY = ev.clientY - oSmall.offsetTop - oMask.offsetHeight/2;
+
+			if(disX < 0){
+				disX = 0;
+			}else if(disX > oSmall.offsetWidth - oMask.offsetWidth - 4){
+				disX = oSmall.offsetWidth - oMask.offsetWidth - 4;
+			}
+			if(disY < 0){
+				disY = 0;
+			}else if(disY > oSmall.offsetHeight - oMask.offsetHeight - 4){
+				disY = oSmall.offsetHeight - oMask.offsetHeight - 4;
+			}
+
+			oMask.style.left = disX + 'px';
+			oMask.style.top = disY + 'px';
+
+			var scaleL = parseFloat(disX/(oSmall.offsetWidth - oMask.offsetWidth));
+			var scaleT = parseFloat(disY/(oSmall.offsetHeight - oMask.offsetHeight));
+
+			oBigImg.style.left = - scaleL * (oBigImg.offsetWidth - oBig.offsetWidth) + 'px';
+			oBigImg.style.top = - scaleT * (oBigImg.offsetHeight - oBig.offsetHeight) + 'px';
+
+		};
+		oSmall.onmouseout = function(){
+
+			oMask.style.display = 'none';
+
+		};
+
+	};
+	</script>
+</head>
+<body>
+	<div id="small-img">
+		<img src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/small.png" alt="">
+		<div id="mask"></div>
+	</div>
+	<div id="big">
+		<img id="big-img" src="http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/big.png" alt="">
+	</div>
+</body>
+</html>
