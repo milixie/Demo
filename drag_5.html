@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<title>飞动的广告</title>
+	<style>
+		#wrap{
+			width:200px;
+			height: 200px;
+			background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/drag.jpg) no-repeat;
+			position: absolute;
+		}
+	</style>
+	<script type = "text/javascript">
+	window.onload = function  () {
+		// body...
+		var oWrap = document.getElementById('wrap');
+		var iSpeedX = 5;
+		var iSpeedY = 5;
+		startMove();
+		function startMove(){
+			var timer = setInterval(auto,30);
+				function auto(){
+					var L = oWrap.offsetLeft+iSpeedX;
+					var T = oWrap.offsetTop+iSpeedY;
+					
+					if(L > document.documentElement.clientWidth-oWrap.offsetWidth){
+						L = document.documentElement.clientWidth-oWrap.offsetWidth;
+						iSpeedX *=  -1;
+					}
+					else if(L < 0){
+						L = 0;
+						iSpeedX *=  -1;
+					}
+					if(T > document.documentElement.clientHeight-oWrap.offsetHeight){
+						T = document.documentElement.clientHeight-oWrap.offsetHeight;
+						iSpeedY *=  -1;
+					}
+					else if(T < 0){
+						T = 0;
+						iSpeedY *=  -1;
+					}
+				
+					oWrap.style.left = L + 'px';
+					oWrap.style.top = T + 'px';
+					oWrap.onmouseover = function(){
+						clearInterval(timer);
+					};
+					oWrap.onmouseout = function(){
+						timer = setInterval(auto,30);
+					}
+
+			}
+		
+		}
+
+	};
+		
+	</script>
+</head>
+<body>
+	<div id = "wrap">	</div>
+</body>
+</html>

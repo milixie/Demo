@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>弹窗</title>
+	<style>
+		#div1{
+			width:0px;
+			height: 0px;
+			background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/drag.jpg) no-repeat;
+			position: absolute;
+		}
+	</style>
+	<script type="text/javascript">
+	window.onload = function  () {
+		var oWrap = document.getElementById('wrap');
+		var oDiv1 = document.getElementById('div1');
+		var timer = null;
+		var iSpeedX = 0;
+		var iSpeedY = 0;
+		var prevX = 0;
+		var prevY = 0;
+		
+		
+		oDiv1.style.left = document.documentElement.clientWidth/2+'px';
+		oDiv1.style.top = document.documentElement.clientHeight/2+'px';
+		toChange(200);
+		function toChange(oTarget){
+			var cTimer = null;
+			var offsetX = oDiv1.offsetLeft;
+			var offsetY = oDiv1.offsetTop;			
+			cTimer = setInterval(function(){
+				if(oDiv1.offsetWidth == oTarget){
+					clearInterval(cTimer);
+					startMove();
+				}
+				else{
+					oDiv1.style.width = oDiv1.offsetWidth+10+'px';
+					oDiv1.style.height = oDiv1.offsetHeight+10+'px';
+					oDiv1.style.left = offsetX-oDiv1.offsetWidth/2+'px';
+					oDiv1.style.top = offsetY-oDiv1.offsetHeight/2+'px';
+				}
+				
+			},30);
+			
+		}
+		function startMove(){
+		 	clearInterval(timer);
+		     timer = setInterval(function(ev){
+		     	ev = ev || window.event;
+		     	iSpeedY += 3;
+
+		     	var iWidth = oDiv1.offsetLeft + iSpeedX;	 
+		     	var iHeight = oDiv1.offsetTop + iSpeedY;
+
+		     	if(iWidth > document.documentElement.clientWidth - oDiv1.offsetWidth){
+		     		iWidth = document.documentElement.clientWidth - oDiv1.offsetWidth;
+		     		iSpeedX *= -0.95;
+		     	}
+		     	else if(iWidth < 0){
+		     		iWidth = 0;
+		     		iSpeedX *= -0.95;
+		     	}
+		     	if(iHeight > document.documentElement.clientHeight - oDiv1.offsetHeight){
+		     		iHeight = document.documentElement.clientHeight - oDiv1.offsetHeight;
+		     		iSpeedY *= -0.95;
+		     		iSpeedX *= 0.95;
+		     	}
+		     	else if(iHeight < 0){
+		     		iHeight = 0;
+		     		iSpeedY *= -0.95;
+		     	}
+		     	oDiv1.style.left = iWidth + 'px';
+		     	oDiv1.style.top = iHeight + 'px';
+		     },30);
+		}
+		
+		var disX = 0;
+		var disY = 0;
+		oDiv1.onmousedown = function(ev){
+			clearInterval(timer);
+			var ev = ev || window.event;
+
+			disX = ev.clientX - oDiv1.offsetLeft;
+			disY = ev.clientY - oDiv1.offsetTop;
+
+			document.onmousemove = function(ev){
+				var ev = ev || window.event;
+
+				var L = ev.clientX - disX;
+				var T = ev.clientY - disY;				
+
+				oDiv1.style.left = L + 'px';
+				oDiv1.style.top = T + 'px';
+
+				iSpeedX = ev.clientX - prevX;
+				iSpeedY = ev.clientY - prevY;
+
+				prevX = ev.clientX;
+				prevY = ev.clientY;
+
+				
+			};
+			document.onmouseup = function(){				
+				document.onmousemove = null;
+				document.onmouseup = null;
+				startMove();
+			};
+			return false;
+		};
+	};
+		
+	</script>
+</head>
+<body>
+	<div id="div1"></div>	
+</body>
+</html>

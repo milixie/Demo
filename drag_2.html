@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<title>自由落体</title>
+	<style>
+		#div1{
+			width:200px;
+			height: 200px;
+			background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/drag.jpg) no-repeat;
+			position: absolute;
+		}
+	</style>
+	<script type = "text/javascript">
+	window.onload = function  () {
+		var oWrap = document.getElementById('wrap');
+		var oDiv1 = document.getElementById('div1');
+		var timer = null;
+		var iSpeedX = 0;
+		var iSpeedY = 0;
+		//startMove();
+		function startMove(){
+			clearInterval(timer);
+			timer = setInterval(auto,30);
+			function auto(){
+				iSpeedX += 1;
+				iSpeedY += 1;
+
+				var iWidth = oDiv1.offsetLeft + iSpeedX;
+				var iHeight = oDiv1.offsetTop + iSpeedY;
+				
+				if(iWidth > document.documentElement.clientWidth - oDiv1.offsetWidth){
+					iWidth = document.documentElement.clientWidth - oDiv1.offsetWidth;
+					iSpeedX *=  -0.95;
+				}
+				else if(iWidth < 0){
+					iWidth = 0;
+					iSpeedX *=  -0.95;
+				}
+			
+				if(iHeight > document.documentElement.clientHeight - oDiv1.offsetHeight){
+					iHeight = document.documentElement.clientHeight - oDiv1.offsetHeight;
+					iSpeedY *=  -0.95;
+				}
+				else if(iHeight < 0){
+					iHeight = 0;
+					iSpeedY *=  -0.95;
+				}
+
+				oDiv1.style.left = iWidth + 'px';
+				oDiv1.style.top = iHeight + 'px';
+			}
+							
+		}
+		var disX = 0;
+		var disY = 0;
+		oDiv1.onmousedown = function(ev){
+			clearInterval(timer);
+			var ev = ev || window.event;
+
+			disX = ev.clientX - oDiv1.offsetLeft;
+			disY = ev.clientY - oDiv1.offsetTop;
+
+			document.onmousemove = function(ev){
+				var ev = ev || window.event;
+
+				var L = ev.clientX - disX;
+				var T = ev.clientY - disY;				
+
+				oDiv1.style.left = L + 'px';
+				oDiv1.style.top = T + 'px';
+			};
+			document.onmouseup = function(){
+				document.onmousemove = null;
+				document.onmouseup = null;
+				startMove();
+			};
+			return false;
+		};
+	};
+		
+	</script>
+</head>
+<body>
+	<div id = "div1"></div>	
+</body>
+</html>

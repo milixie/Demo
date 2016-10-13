@@ -171,22 +171,22 @@
 	};*/
 	//jquery方法
 	$(function(){
-		var res=document.cookie.substring(5);
-		if(res!='www.open.com.cn'){
+		// var res=document.cookie.substring(5);
+		// if(res!='www.open.com.cn'){
 			$('#mask,#step,#step div:eq(0)').show();
 			$('#step div a').click(function(){
-				var current=$(this).parent();
+				var current = $(this).parent();
 				current.hide();
 				current.next().show();
 			});
 			$('#step div span,#step div a:last').click(function(){
 				$('#mask,#step').hide();
 			});
-		}
+		// }
 		
-		var oDate=new Date();
+		var oDate = new Date();
 		oDate.setDate(oDate.getDate()+20);
-		document.cookie='name=www.open.com.cn;expires='+oDate;
+		// document.cookie='name=www.open.com.cn;expires='+oDate;
 	});
 	</script>
 </head>

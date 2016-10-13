@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>调节尺寸</title>
+	<style>
+		#wrap{
+			width:200px;
+			height:200px;
+			background: url(http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img/drag.jpg) repeat;
+			position: absolute;
+		}
+		#small{
+			height:50px;
+			width:50px;
+			background: yellow;
+			position: absolute;
+			bottom:0;
+			right:0;
+		}
+	</style>
+	<script type="text/javascript">
+	window.onload = function  () {
+		// body...
+		var oWrap = document.getElementById('wrap');
+		var oSmall = document.getElementById('small');
+
+		var disX = 0;
+		var disY = 0;
+		var disW = 0;
+		var disH = 0;
+
+		oSmall.onmousedown = function(ev){
+			ev = ev || window.event;
+			disX = ev.clientX;
+			disY = ev.clientY;
+			disW = oWrap.offsetWidth;
+			disH = oWrap.offsetHeight;
+			document.onmousemove = function(ev){
+				ev = ev || window.event;
+
+				var w = ev.clientX - disX + disW;
+				var h = ev.clientY - disY + disH;
+
+				if(w < 100){
+					w = 100;
+				}
+				if(h < 100){
+					h = 100;
+				}
+				oWrap.style.width = w + 'px';
+				oWrap.style.height = h + 'px';
+
+			};
+			document.onmouseup = function(){
+				document.onmousemove = null;
+				document.onmouseup = null;
+			};
+
+
+		};
+	};
+		
+	</script>
+</head>
+<body>
+	<div id="wrap">
+		<div id="small"></div>
+	</div>
+</body>
+</html>
