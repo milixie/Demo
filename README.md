@@ -1,5 +1,7 @@
 # 个人小作品汇总
 
+- [使用flex布局一个购物车](https://github.com/milixie/Blog/blob/master/shop-cart.html)
+
 - [计时器](http://7xj5et.com1.z0.glb.clouddn.com/github/demo/timer.html)
 
 - [散列画廊特效一](http://7xj5et.com1.z0.glb.clouddn.com/gallery/html/gallery_1.html)
