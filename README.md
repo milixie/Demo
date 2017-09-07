@@ -1,5 +1,7 @@
 # 个人小作品汇总
 
+- [使用 vue 实现一个简单购物车页面](http://7xj5et.com1.z0.glb.clouddn.com/shop/shop.html)
+
 - [使用flex布局一个购物](http://7xj5et.com1.z0.glb.clouddn.com/github/demo/blob/shop/0.1.1/shop-cart.html)
 
 - [计时器](http://7xj5et.com1.z0.glb.clouddn.com/github/demo/timer.html)
