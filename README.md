@@ -24,6 +24,8 @@
 
 - [照片墙](http://7xj5et.com1.z0.glb.clouddn.com/github/demo/photo.html)
 
+- [照片墙-使用Vue编写](https://github.com/milixie/vue-photo)
+
 - [图片裁剪](http://7xj5et.com1.z0.glb.clouddn.com/github/demo/img-cut.html)
 
 - [新手引导](http://7xj5et.com1.z0.glb.clouddn.com/github/demo/guide.html)
