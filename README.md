@@ -1,5 +1,9 @@
 # 个人小作品汇总
 
+- [使用vue做的大转盘抽奖系统](https://github.com/milixie/vue-photo)
+
+- [使用vue做的方格抽奖系统](https://github.com/milixie/vue-photo)
+
 - [使用 react 实现的一个简单的任务列表](http://7xj5et.com1.z0.glb.clouddn.com/demo/react/todo.html)
 
 - [使用 vue 实现的一个简单的任务列表](http://7xj5et.com1.z0.glb.clouddn.com/demo/todo.html)
