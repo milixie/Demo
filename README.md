@@ -1,5 +1,7 @@
 # 个人小作品汇总
 
+- [查看canvas做的手表的效果](https://github.com/milixie/vue-photo)
+
 - [查看canvas做的随机线条的效果](https://github.com/milixie/vue-photo)
 
 - [查看canvas做的一个笑脸的效果](https://github.com/milixie/vue-photo)
