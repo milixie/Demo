@@ -1,5 +1,17 @@
 # 个人小作品汇总
 
+- [查看canvas做的随机线条的效果](https://github.com/milixie/vue-photo)
+
+- [查看canvas做的一个笑脸的效果](https://github.com/milixie/vue-photo)
+
+- [查看canvas基本放射渐变效果](https://github.com/milixie/vue-photo)
+
+- [查看canvas基本线性渐变效果](https://github.com/milixie/vue-photo)
+
+- [查看canvas基本效果2](https://github.com/milixie/vue-photo)
+
+- [查看canvas基本效果](https://github.com/milixie/vue-photo)
+
 - [使用vue做的大转盘抽奖系统](https://github.com/milixie/vue-photo)
 
 - [使用vue做的方格抽奖系统](https://github.com/milixie/vue-photo)
